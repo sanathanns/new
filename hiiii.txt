@@ -1,0 +1,87 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def prepend(self, new_data):
+        new_node = Node(new_data)
+        new_node.next = self.head
+        self.head = new_node
+
+    def insertAfter(self, prev_node, new_data):
+        if prev_node is None:
+            print("The given previous node must be in LinkedList.")
+            return
+        new_node = Node(new_data)
+        new_node.next = prev_node.next
+        prev_node.next = new_node
+
+    def append(self, new_data):
+        new_node = Node(new_data)
+        if self.head is None:
+            self.head = new_node
+            return
+        last = self.head
+        while last.next:
+            last = last.next
+        last.next = new_node
+
+    def deleteNode(self, position):
+        if self.head is None:
+            print("The linked list is empty")
+            return
+        temp = self.head
+        if position == 0:
+            self.head = temp.next
+            temp = None
+            return
+        for i in range(position - 1):
+            temp = temp.next
+            if temp is None:
+                break
+        if temp is None:
+            return
+        if temp.next is None:
+            print("The position is not found, No elements deleted")
+            return
+        print("The position is found")
+        next_node = temp.next.next
+        temp.next = None
+        temp.next = next_node
+
+    def search(self, key):
+        current = self.head
+        while current is not None:
+            if current.data == key:
+                return True
+            current = current.next
+        return False
+
+    def traversal(self):
+        temp = self.head
+        while temp:
+            print(str(temp.data) + " ", end="\n")
+            temp = temp.next
+
+l = LinkedList()
+l.append(3)
+l.prepend(2)
+l.prepend(1)
+l.append(4)
+l.insertAfter(l.head.next, 5)
+print('Linked list elements are:')
+l.traversal()
+n = int(input("Enter the position of element to delete: "))
+l.deleteNode(n)
+print("\nAfter deleting an element:")
+l.traversal()
+print()
+find = int(input("Enter the element to find: "))
+if l.search(find):
+    print(str(find) + " is found")
+else:
+    print(str(find) + " is not found")
